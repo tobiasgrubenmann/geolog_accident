@@ -1,0 +1,43 @@
+# Q1: crossings near accidents (1 spatial relation)
+
+# entity evaluation
+iterate_ids_random("accidents", 256, AccidentID), near(("accidents", AccidentID), ("traffic", TrafficID)), entity_type(crossing_features, ("traffic", TrafficID))
+
+# relation evaluation
+random_relation("accidents", 256, Accidents), entity_type_relational(crossing_features, "traffic", Crossings), near_relational(Accidents, Crossings, AccidentsNearCrossing)
+
+# relation evaluation iterator
+random_relation("accidents", 256, Accidents), entity_type_relational(crossing_features, "traffic", Crossings), near_relational(Accidents, Crossings, AccidentsNearCrossing), iterate_relational(AccidentsNearCrossing, [Accident, Crossing])
+
+# Q2: traffic features on the same street
+
+# entity evaluation
+iterate_ids_random("accidents", 256, AccidentID), closeby(("accidents", AccidentID), ("roads", RoadID)), closeby(("traffic", TrafficID), ("roads", RoadID))
+
+# relation evaluation
+random_relation("accidents", 256, Accidents), closeby_relational(Accidents, "roads", AccidentsCloseToRoad), filter_by_relation("roads", AccidentsCloseToRoad, 2, RoadsFiltered), closeby_relational("traffic", RoadsFiltered, TrafficCloseToRoad), join_relational(AccidentsCloseToRoad, TrafficCloseToRoad,AccidentSameRoadTraffic, "id_2", "id_2")
+
+# relation evaluation iterator
+random_relation("accidents", 256, Accidents), closeby_relational(Accidents, "roads", AccidentsCloseToRoad), filter_by_relation("roads", AccidentsCloseToRoad, 2, RoadsFiltered), closeby_relational("traffic", RoadsFiltered, TrafficCloseToRoad), join_relational(AccidentsCloseToRoad, TrafficCloseToRoad,AccidentSameRoadTraffic, "id_2", "id_2"), iterate_relational(AccidentSameRoadTraffic, [Accident, Traffic, Road])
+
+# Q3: Accident near pois near schools.
+
+# entity
+iterate_ids_random("accidents", 256, AccidentID), near(("accidents", AccidentID), ("pois", Pois1)), near(("pois", Pois1), ("pois", Pois2)), entity_type(school_features, ("pois", Pois2))
+
+# relation
+random_relation("accidents", 256, Accidents), near_relational(Accidents, "pois", AccidentPois), filter_by_relation("pois", AccidentPois, 2, PoisFiltered), entity_type_relational(school_features, "pois", Schools), near_relational(PoisFiltered, Schools, PoisSchools), join_relational(AccidentPois, PoisSchools, AccidentSchoolPois, "id_2", "id_1")
+
+# relation iterator
+random_relation("accidents", 256, Accidents), near_relational(Accidents, "pois", AccidentPois), filter_by_relation("pois", AccidentPois, 2, PoisFiltered), entity_type(school_features, "pois", Schools), near_relational(PoisFiltered, Schools, PoisSchools), join_relational(AccidentPois, PoisSchools, AccidentSchoolPois, "id_2", "id_1"), iterate_relational(AccidentSchoolPois, [Accident, School, Pois])
+
+# Q4: Accident near crossing without traffic light closeby.
+
+# entity
+iterate_ids_random("accidents", 256, AccidentID), near(("accidents", AccidentID), ("traffic", Traffic)), entity_type(crossing_features, ("traffic", Traffic)), \+((closeby(("traffic", Traffic), ("traffic", OtherTraffic)), entity_type(traffic_signal_features, ("traffic", OtherTraffic))))
+
+# table
+random_relation("accidents", 256, Accidents), entity_type_relational(crossing_features, "traffic", Crossings), near_relational(Accidents, Crossings, AccidentsNearCrossing), filter_by_relation("traffic", AccidentsNearCrossing, 2, CrossingsFiltered), entity_type_relational(traffic_signal_features, "traffic", Signals), near_relational(CrossingsFiltered, Signals, CrossingsSignals), join_relational(AccidentsNearCrossing, CrossingsSignals, AccidentSignalsCrossing, "id_2", "id_1"), project_id_relational(AccidentSignalsCrossing, [["id_1", "id_1"], ["id_3", "id_2"]], AccidentWithSignalsNearCrossing), minus_relational(AccidentsNearCrossing, AccidentWithSignalsNearCrossing, Result)
+
+# table iterator
+random_relation("accidents", 256, Accidents), entity_type_relational(crossing_features, "traffic", Crossings), near_relational(Accidents, Crossings, AccidentsNearCrossing), filter_by_relation("traffic", AccidentsNearCrossing, 2, CrossingsFiltered), entity_type_relational(traffic_signal_features, "traffic", Signals), near_relational(CrossingsFiltered, Signals, CrossingsSignals), join_relational(AccidentsNearCrossing, CrossingsSignals, AccidentSignalsCrossing, "id_2", "id_1"), project_id_relational(AccidentSignalsCrossing, [["id_1", "id_1"], ["id_3", "id_2"]], AccidentWithSignalsNearCrossing), minus_relational(AccidentsNearCrossing, AccidentWithSignalsNearCrossing, Result), iterate_relational(Result, [Accident, Crossing])
