@@ -3,9 +3,9 @@ import geolog_core.interpreter
 
 ip = geolog_core.interpreter.Interpreter()
 for i in [256, 512, 1024, 2048, 4096, 8192]:
-    query = 'iterate_ids_random("accidents", ' + str(i) + ', AccidentID), closeby(("accidents", AccidentID), ("roads", RoadID)), closeby(("traffic", TrafficID), ("roads", RoadID))'
+    query = 'random_relation("accidents", ' + str(i) + ', Accidents), closeby((Accidents, AccidentID), ("roads", RoadID)), closeby(("traffic", TrafficID), ("roads", RoadID))'
     result = ""
-    for j in range(5):
+    for j in range(10):
         start = time.time()
         ip.query(query)
         end = time.time()

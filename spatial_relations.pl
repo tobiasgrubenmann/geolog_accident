@@ -1,4 +1,4 @@
-:- module(spatial_relations, [near/2, near_relational/3, closeby/2, closeby_relational/3]).
+:- module(spatial_relations, [near/2, near_relational/4, closeby/2, closeby_relational/4]).
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Spatial Concepts
@@ -22,9 +22,9 @@ near(Input1, Input2) :-
 %------------------------------------------------------------------------------
 % Returns as output a table with all pair of IDs that are near each other according to setup:near_radius.
 
-near_relational(Table1, Table2, Output) :-
+near_relational(Table1, Table2, Output, Fields) :-
     setup:near_radius(Radius),
-    within_distance_relational(Table1, Table2, Output, Radius).
+    within_distance_relational(Table1, Table2, Output, Radius, Fields).
 
 %------------------------------------------------------------------------------
 % closeby(?Input1, ?Input2):
@@ -40,9 +40,9 @@ closeby(Input1, Input2) :-
 %------------------------------------------------------------------------------
 % Returns as output a table with all pair of IDs that are close each other according to setup:close_radius.
 
-closeby_relational(Table1, Table2, Output) :-
+closeby_relational(Table1, Table2, Output, Fields) :-
     setup:close_radius(Radius),
-    within_distance_relational(Table1, Table2, Output, Radius).
+    within_distance_relational(Table1, Table2, Output, Radius, Fields).
 
 
 
