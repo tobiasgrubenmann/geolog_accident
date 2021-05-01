@@ -1,4 +1,4 @@
-:- module(setup, [near_radius/1, between_tolerance/1, initialize_db_connection/1, db_connection/1]).
+:- module(setup, [near_radius/1, between_tolerance/1, initialize_db_connection/1, db_connection/1, db_connection_path/1]).
 
 :- use_module(designated).
 
