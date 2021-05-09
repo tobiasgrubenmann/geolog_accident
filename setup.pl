@@ -44,4 +44,5 @@ designated:relation_key("roads", "osm_id").
 designated:designated_relation("buildings").
 designated:relation_key("buildings", "osm_id").
 
-?- start_geolog('C:/Users/Tobias/AppData/Roaming/ESRI/Desktop10.8/ArcCatalog/geolog.sde').
+:- designated:initialize_db_connection("C:/Users/Tobias/AppData/Roaming/ESRI/Desktop10.8/ArcCatalog/geolog.sde", run).
+%:- start_geolog('C:/Users/Tobias/AppData/Roaming/ESRI/Desktop10.8/ArcCatalog/geolog.sde').
