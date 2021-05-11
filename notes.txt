@@ -1,0 +1,28 @@
+
+---------- Tuples ------
+accident(P1)
+street(S)
+
+closeby( (accident,Id1), (street, Id2) ) 
+
+
+---------- Relational ------
+
+closeby( accident, street, CloseByAccidentsAndStreets, [accident, street] ),  
+closeby( street, traficFeatures, CloseByAccidentsAndTrafficFeatures, [street, traficFeatures] ) , 
+join_relational(CloseByAccidentsAndStreets, CloseByAccidentsAndTrafficFeatures, Output, street=street, [(accidents,accidents), (trafficFeatures,trafficFeatures)]).
+
+
+
+% ??? alternative syntax für join ???:
+% create Output keeping [trafficFeatures, accidents as acc] <-join- CloseByAccidentsAndStreets.street = CloseByAccidentsAndTrafficFeatures.street
+%
+% Termdarstellung mit passenden Operatordeklarationen: 
+%
+% <-join-( keeping( create(Output),
+%                   [trafficFeatures, as(accidents,acc)]
+%          ),
+%          =( CloseByAccidentsAndStreets.street       
+%             CloseByAccidentsAndTrafficFeatures.street
+%          )
+% )
